@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_expenses_app/model/transaction.dart';
+import 'package:personal_expenses_app/widgets/chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> transactions;
@@ -22,21 +23,46 @@ class Chart extends StatelessWidget {
         }
       }
 
-      return {'day': DateFormat.E().format(weekDay).substring(0, 1), 'amount': totalSum};
+      return {
+        'day': DateFormat.E().format(weekDay).substring(0, 1),
+        'amount': totalSum
+      };
     });
+  }
+
+  double get totalSpending {
+    return groupedTransactionValues.fold(0.0, (sum, item) {
+      return sum + item['amount'];
+    });
+  }
+
+  double getSpendingPercentageOfTotal(amount) {
+    if (totalSpending <= 0) {
+      return 0;
+    }
+    return (amount as double) / totalSpending;
   }
 
   @override
   Widget build(BuildContext context) {
-    print(groupedTransactionValues);
-
     return Card(
       elevation: 7,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactionValues.map((data) {
-          return Text('${data['day']} : ${data['amount'].toString()}');
-        }).toList(),
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactionValues.map((data) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: data['day'],
+                spendingAmount: data['amount'],
+                spendingPctOfTotal: getSpendingPercentageOfTotal(data['amount']),
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
