@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _deleteTransaction(String id){
+  void _deleteTransaction(String id) {
     setState(() {
       _transactions.removeWhere((tx) {
         return tx.id == id;
@@ -82,27 +82,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Personal Expenses',
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          ),
-        ],
+    final appBar = AppBar(
+      title: Text(
+        'Personal Expenses',
       ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        ),
+      ],
+    );
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Chart(
-              transactions: _recentTransactions,
+            Container(
+              height: (MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.4,
+              child: Chart(
+                transactions: _recentTransactions,
+              ),
             ),
-            TransactionList(
-              transactions: _transactions,
-              onDeleteTx: _deleteTransaction,
+            Container(
+              height: (MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.6,
+              child: TransactionList(
+                transactions: _transactions,
+                onDeleteTx: _deleteTransaction,
+              ),
             ),
           ],
         ),

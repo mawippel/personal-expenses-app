@@ -6,13 +6,13 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function onDeleteTx;
 
-  const TransactionList({Key key, @required this.transactions, @required this.onDeleteTx})
+  const TransactionList(
+      {Key key, @required this.transactions, @required this.onDeleteTx})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
       padding: EdgeInsets.only(bottom: 20),
       child: transactions.isEmpty
           ? Column(
