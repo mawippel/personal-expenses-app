@@ -1,0 +1,17 @@
+name: Dart CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    container:
+      image:  cirrusci/flutter:v1.7.8-hotfix.4
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: flutter pub get
+      working-directory: personal-expenses-app
+    - name: Run tests
+      run: flutter test
+      working-directory: personal-expenses-app
